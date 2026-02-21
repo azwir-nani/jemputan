@@ -17,6 +17,8 @@
   --bar-height: clamp(50px, 10vh, 60px);
   --bar-gap: 12px;
   --bar-radius: 18px;
+  --gold-1: #FFF0A6;
+  --gold-2: #B8870B;
 }
 /* Font */
 @font-face{
@@ -123,6 +125,17 @@ body{
   opacity: 0;
   animation: basmalahIn 2s ease forwards;
   animation-delay: 0.5s;
+}
+
+/* Guest Rotation */
+.guest-rotate strong{
+  display: inline-block;
+  transition: opacity 0.6s ease;
+  opacity: 1;
+}
+
+.guest-rotate strong.is-fading{
+  opacity: 0;
 }
 
 /* Couple Names Overlay */
@@ -256,7 +269,60 @@ body{
   z-index: 1000;
 }*/
 
-/* Section 3: Countdown */
+/* Section 3: Itinerary */
+.itinerary-section{
+  position: relative;
+  padding: 70px 28px;
+  text-align: center;
+
+  background: url('upload/background/BG.png') center/cover no-repeat;
+  color: #3B342B;
+}
+
+/* Itinerary stagger fade */
+.itinerary-item{
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition-delay: var(--delay, 0ms);
+}
+
+
+.itinerary-item.in-view{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+.itinerary-content{
+  position: relative;
+  z-index: 1;
+}
+
+.itinerary-title{
+  font-family: 'CinzelCustom', serif;
+  font-size: clamp(18px, 5vw, 24px);
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+
+.itinerary-item{
+  margin: 18px 0;
+}
+
+.itinerary-time{
+  font-family: 'CinzelCustom', serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.itinerary-desc{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(15px, 4vw, 18px);
+  margin-top: 4px;
+}
+
+/* Section 4: Countdown */
 .countdown-section{
   padding-top: 40px;
   padding-bottom: 60px;
@@ -401,13 +467,9 @@ body{
     <div class="seasons-text">
       Dengan penuh rasa kesyukuran, kami menjemput
     </div>
-
-    <div class="seasons-text">
-      Dato, Datin, Tuan, Puan, Encik, Cik
-    </div>
     <br>
-    <div class="seasons-text"><i>
-      <strong>GUEST NAME</strong></i>
+    <div class="seasons-text guest-rotate">
+      <i><strong id="guestRotateText">Dato &amp; Datin</strong></i>
     </div>
     <br>
     <div class="seasons-text">
@@ -441,9 +503,42 @@ body{
 
   </section>
 
-  <!-- Section 3: Countdown -->
+<!-- Section 3: Itinerary -->
+<section class="itinerary-section section">
+
+  <div class="itinerary-content">
+
+    <div class="itinerary-title">
+      Aturcara Majlis
+    </div>
+
+    <div class="itinerary-item">
+      <div class="itinerary-time">11:00 AM</div>
+      <div class="itinerary-desc">Ketibaan Tetamu</div>
+    </div>
+
+    <div class="itinerary-item">
+      <div class="itinerary-time">12:30 PM</div>
+      <div class="itinerary-desc">Ketibaan Pengantin</div>
+    </div>
+
+    <div class="itinerary-item">
+      <div class="itinerary-time">1:00 PM</div>
+      <div class="itinerary-desc">Jamuan Makan</div>
+    </div>
+
+    <div class="itinerary-item">
+      <div class="itinerary-time">4:00 PM</div>
+      <div class="itinerary-desc">Majlis Bersurai</div>
+    </div>
+
+  </div>
+
+</section>
+
+  <!-- Section 4: Countdown -->
   <section class="section countdown-section">
-    <div class="countdown-title seasons-text">Countdown to Our Day</div>
+    <div class="countdown-title seasons-text">Menanti Hari</div>
 
     <div class="countdown" id="countdown">
       <div class="cd-box">
@@ -478,25 +573,32 @@ body{
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  // Existing fade-in/out for section 2
+  // Fade-in/out for section elements
   const elements = document.querySelectorAll(".section > *");
+  const itineraryItems = document.querySelectorAll(".itinerary-item");
+
+  // Assign stagger delays (0ms, 120ms, 240ms, ...)
+  itineraryItems.forEach((item, i) => {
+    item.style.setProperty("--delay", `${i * 120}ms`);
+  });
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add("in-view");
       else entry.target.classList.remove("in-view");
     });
   }, { threshold: 0.15 });
-  elements.forEach(el => observer.observe(el));
 
-  // Countdown (Section 3)
+  elements.forEach(el => observer.observe(el));
+  itineraryItems.forEach(el => observer.observe(el));
+
+  // Countdown (your existing code stays the same below)
   const elDays  = document.getElementById("cd-days");
   const elHours = document.getElementById("cd-hours");
   const elMins  = document.getElementById("cd-mins");
   const elSecs  = document.getElementById("cd-secs");
-  const note    = document.getElementById("countdown-note");
 
-  // Event: 12 April 2026, 11:00 (local device time)
-  const target = new Date(2026, 3, 12, 11, 0, 0); // month is 0-based (3 = April)
+  const target = new Date(2026, 3, 12, 11, 0, 0);
 
   function pad(n){ return String(n).padStart(2, "0"); }
 
@@ -509,7 +611,6 @@ document.addEventListener("DOMContentLoaded", function() {
       elHours.textContent = "00";
       elMins.textContent = "00";
       elSecs.textContent = "00";
-      if (note) note.textContent = "Today is the day ✨";
       return;
     }
 
@@ -527,6 +628,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
   tick();
   setInterval(tick, 1000);
+
+  // Guest title rotation (fade transition)
+  const guestEl = document.getElementById("guestRotateText");
+  const guestTitles = ["Dato & Datin", "Tuan & Puan", "Encik & Cik"];
+  let guestIndex = 0;
+
+  if (guestEl){
+    setInterval(() => {
+      // fade out
+      guestEl.classList.add("is-fading");
+
+      // swap text mid-fade
+      setTimeout(() => {
+        guestIndex = (guestIndex + 1) % guestTitles.length;
+        guestEl.textContent = guestTitles[guestIndex];
+
+        // fade in
+        guestEl.classList.remove("is-fading");
+      }, 650);
+    }, 1500); // change speed here
+  }
+
 });
 </script>
 
