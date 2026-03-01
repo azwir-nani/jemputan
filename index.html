@@ -743,7 +743,7 @@ body{
 
       <div class="itinerary-item">
         <div class="itinerary-time">1:00 PM</div>
-        <div class="itinerary-desc">Jamuan Makan</div>
+        <div class="itinerary-desc">Jamuan Makan Beradab</div>
       </div>
 
       <div class="itinerary-item">
@@ -964,7 +964,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fill content
     if (key === "contact"){
-      sheetTitle.textContent = "Contact";
+      sheetTitle.textContent = "Hubungi";
       const rows = CONTACTS.map(c => {
         const tel = `tel:${c.phone}`;
         // WhatsApp: use wa.me without "+" sign
@@ -989,7 +989,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (key === "map"){
-      sheetTitle.textContent = "Location";
+      sheetTitle.textContent = "Lokasi";
       sheetBody.innerHTML = `
         <div class="sheet-grid2">
           <a class="big-icon-btn" href="${GMAPS_URL}" target="_blank" rel="noopener" aria-label="Open Google Maps">
@@ -1003,7 +1003,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     if (key === "calendar"){
-      sheetTitle.textContent = "Calendar";
+      sheetTitle.textContent = "Kalendar";
 
       // Build Google Calendar link
       // Use UTC timestamps in the URL (Google accepts Z format)
