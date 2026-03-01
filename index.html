@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Walimatul Urus | Azwir x Nani</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
@@ -20,8 +21,11 @@
   --bar-radius: 18px;
   --gold-1: #FFF0A6;
   --gold-2: #B8870B;
+
+  --sheet-gap: 8px; /* space between sheet and bottom bar */
 }
-/* Font */
+
+/* Fonts */
 @font-face{
   font-family: 'ImperiaB';
   src: url('upload/fonts/ImperiaB.ttf') format('truetype');
@@ -47,8 +51,6 @@
   transform: translateY(20px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
-
-/* Visible state */
 .section > *.in-view{
   opacity: 1;
   transform: translateY(0);
@@ -66,22 +68,23 @@ body{
 /* Frame */
 .frame{
   width: 100%;
-  max-width: 480px;      /* caps at 480px, shrinks on smaller screens */
+  max-width: 480px;
   margin: 0 auto;
   background: var(--frame);
   border-left: 1px solid var(--border);
   border-right: 1px solid var(--border);
-  padding-bottom: calc(var(--bar-height) + (var(--bar-gap) * 2) + env(safe-area-inset-bottom)); /* prevent content hiding behind fixed bar */
+  padding-bottom: calc(
+    var(--bar-height) + (var(--bar-gap) * 2) + env(safe-area-inset-bottom)
+  );
 }
 
-/* Section 1: Hero (arch + basmalah overlay) */
+/* Section 1: Hero */
 .hero{
   position: relative;
   height: calc(100svh - var(--bar-height) - (var(--bar-gap) * 2) - env(safe-area-inset-bottom));
   overflow: hidden;
-
   opacity: 0;
-  animation: heroFade 1.4s ease forwards; /* transition after page load */
+  animation: heroFade 1.4s ease forwards;
 }
 
 .hero::after{
@@ -93,7 +96,6 @@ body{
   height:150px;
   pointer-events:none;
   z-index:2;
-
   background:
     linear-gradient(to bottom,
       rgba(255,255,255,0) 0%,
@@ -123,10 +125,8 @@ body{
   line-height: 2;
   direction: rtl;
   white-space: nowrap;
-
   z-index: 2;
 
-  /* Subtle gold gradient */
   color: transparent;
   background: linear-gradient(
     180deg,
@@ -151,10 +151,7 @@ body{
   transition: opacity 0.6s ease;
   opacity: 1;
 }
-
-.guest-rotate strong.is-fading{
-  opacity: 0;
-}
+.guest-rotate strong.is-fading{ opacity: 0; }
 
 /* Couple Names Overlay */
 .couple-names{
@@ -172,7 +169,6 @@ body{
   -webkit-background-clip: text;
   background-clip: text;
 
-  /*Couple Name Adjustable size */
   font-size: clamp(40px, 20vw, 100px);
   letter-spacing: 1.2px;
 
@@ -180,27 +176,19 @@ body{
   animation: fadeNames 2s ease forwards;
   animation-delay: 1s;
 }
-
-.couple-names span{
-  display: block;
-  line-height: 1.2;
-}
-
-.couple-names .amp{
-  font-size: 0.7em;
-  margin: 10px 0;
-}
+.couple-names span{ display: block; line-height: 1.2; }
+.couple-names .amp{ font-size: 0.7em; margin: 10px 0; }
 
 .wedding-date{
   position: absolute;
-  top: calc(50% + clamp(120px, 25vh, 210px)); /* adjust vertical spacing here */
+  top: calc(50% + clamp(120px, 25vh, 210px));
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   z-index: 3;
 
   font-family: Georgia, serif;
-  font-size: clamp(12px, 3.5vw, 16px); /* adjustable size */
+  font-size: clamp(12px, 3.5vw, 16px);
   letter-spacing: 4px;
 
   color: transparent;
@@ -228,8 +216,6 @@ body{
   direction: rtl;
   letter-spacing: 0.5px;
 
-
-  /* Subtle gold gradient */
   color: transparent;
   background: linear-gradient(
     180deg,
@@ -240,9 +226,6 @@ body{
   );
   -webkit-background-clip: text;
   background-clip: text;
-
-  /* Soft glow 
-  text-shadow: 0 4px 12px rgba(184,135,11,0.25);*/
 }
 
 .parents-names{
@@ -261,7 +244,6 @@ body{
   line-height: 1.4;
   letter-spacing: 2px;
 
-  /* Subtle gold gradient */
   color: transparent;
   background: linear-gradient(
     180deg,
@@ -273,7 +255,6 @@ body{
   -webkit-background-clip: text;
   background-clip: text;
 
-  /* Soft glow */
   text-shadow: 0 4px 12px rgba(184,135,11,0.25);
 }
 
@@ -293,81 +274,45 @@ body{
   line-height: 1.8;
 }
 
-.venue, .date, .time{
-  margin-top: 30px;
-}
-
-/* Bottom Bar 
-.bottom-bar{
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-
-  height: var(--bar-height);
-  background: var(--bar);
-  border-top: 1px solid var(--border);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 1000;
-}*/
+.venue, .date, .time{ margin-top: 30px; }
 
 /* Section 3: Itinerary */
 .itinerary-section{
   position: relative;
   padding: 70px 28px;
   text-align: center;
-  background: #F0F0F0;     /* clean base so it matches Section 2 */
+  background: #F0F0F0;
   color: #3B342B;
-  overflow: hidden;        /* hides floral overflow nicely */
+  overflow: hidden;
 }
 
-/* Floral side images for Section 3 */
 /* Floral side borders */
 .itinerary-floral{
   position: absolute;
   top: 0;
   height: 100%;
   width: auto;
-
-  max-width: 100px;   /* border width control */
+  max-width: 100px;
   object-fit: contain;
 
   pointer-events: none;
   user-select: none;
   z-index: 0;
 
-  opacity: 0;                 /* start hidden */
-  transform: scale(1.5);     /* start slightly zoomed */
+  opacity: 0;
+  transform: scale(1.5);
   transition: opacity 1s ease, transform 1.16s ease;
 
-  filter: saturate(90%) brightness(100%);; /* soften intensity */
+  filter: saturate(90%) brightness(100%);
 }
+.itinerary-floral.left{ left: 0; }
+.itinerary-floral.right{ right: 0; }
 
-/* Left border */
-.itinerary-floral.left{
-  left: 0;
-}
-
-/* Right border */
-.itinerary-floral.right{
-  right: 0;
-}
-
-/* When section enters view */
 .itinerary-section.itinerary-inview .itinerary-floral{
-  opacity: 1;      /* reduced opacity */
-  transform: scale(1); /* zoom-out */
+  opacity: 1;
+  transform: scale(1);
 }
 
-/* Make sure your content stays above florals */
 .itinerary-content{
   padding: 0 28px;
   position: relative;
@@ -380,17 +325,11 @@ body{
   transform: translateY(16px);
   transition: opacity 0.8s ease, transform 0.8s ease;
   transition-delay: var(--delay, 0ms);
+  margin: 18px 0;
 }
-
-
 .itinerary-item.in-view{
   opacity: 1;
   transform: translateY(0);
-}
-
-.itinerary-content{
-  position: relative;
-  z-index: 1;
 }
 
 .itinerary-title{
@@ -399,17 +338,11 @@ body{
   letter-spacing: 3px;
   margin-bottom: 30px;
 }
-
-.itinerary-item{
-  margin: 18px 0;
-}
-
 .itinerary-time{
   font-family: 'CinzelCustom', serif;
   font-size: 14px;
   letter-spacing: 2px;
 }
-
 .itinerary-desc{
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(15px, 4vw, 18px);
@@ -421,20 +354,17 @@ body{
   padding-top: 40px;
   padding-bottom: 60px;
 }
-
 .countdown-title{
   margin-bottom: 18px;
   font-size: clamp(18px, 5vw, 22px);
   letter-spacing: 1px;
 }
-
 .countdown{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-top: 10px;
 }
-
 .cd-box{
   background: rgba(255,255,255,0.55);
   border: 1px solid rgba(0,0,0,0.06);
@@ -443,14 +373,12 @@ body{
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 }
-
 .cd-num{
   font-family: 'CinzelCustom', serif;
   font-size: clamp(18px, 7vw, 30px);
   line-height: 1;
   letter-spacing: 1px;
 }
-
 .cd-label{
   margin-top: 8px;
   font-family: 'Cormorant Garamond', serif;
@@ -458,14 +386,13 @@ body{
   letter-spacing: 2px;
   opacity: 0.75;
 }
-
-/* Make it nice on very small screens */
 @media (max-width: 360px){
   .countdown{ gap: 8px; }
   .cd-box{ padding: 12px 6px; }
   .cd-label{ font-size: 11px; }
 }
 
+/* Floating glass bottom bar */
 .bottom-bar{
   position: fixed;
   left: 50%;
@@ -480,7 +407,7 @@ body{
   align-items: center;
   justify-content: center;
 
-  background: rgba(242, 230, 211, 0.55); /* champagne glass */
+  background: rgba(242, 230, 211, 0.55);
   border: 1px solid rgba(233, 221, 200, 0.75);
   border-radius: var(--bar-radius);
 
@@ -494,43 +421,240 @@ body{
   z-index: 1000;
 }
 
-/* Animations */
-@keyframes heroFade{
-  to{ opacity: 1; }
-}
-@keyframes basmalahIn{
-  to{
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-}
-@keyframes zoomOut{
-  from{
-    transform: translate(-50%, -50%) scale(2);
-  }
-  to{
-    transform: translate(-50%, -50%) scale(1.25);
-  }
-}
-@keyframes fadeNames{
-  to{
-    opacity: 1;
-  }
+/* Bottom bar icon buttons */
+.bottom-actions{
+  width: 100%;
+  height: 100%;
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
+.bottom-actions button{
+  appearance: none;
+  border: 0;
+  background: transparent;
+
+  flex: 1;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.bottom-actions button:active{
+  background: rgba(255,255,255,0.25);
+}
+
+.bottom-actions img{
+  width: clamp(22px, 6vw, 30px);
+  height: clamp(22px, 6vw, 30px);
+  object-fit: contain;
+  opacity: 0.92;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.08));
+}
+
+/* =========================
+   Glass Sheet (popup box)
+   ========================= */
+.sheet-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1200; /* above bar */
+}
+
+.sheet{
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%) translateY(18px);
+  bottom: calc(var(--bar-gap) + env(safe-area-inset-bottom) + var(--bar-height) + var(--sheet-gap));
+
+  width: calc(100% - (var(--bar-gap) * 2));
+  max-width: calc(480px - (var(--bar-gap) * 2));
+
+  background: rgba(242, 230, 211, 0.55);
+  border: 1px solid rgba(233, 221, 200, 0.75);
+  border-radius: 18px;
+
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+
+  box-shadow:
+    0 18px 46px rgba(0,0,0,0.14),
+    0 2px 10px rgba(0,0,0,0.06);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.32s ease;
+
+  z-index: 1300;
+}
+
+.sheet.is-open{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.sheet-backdrop.is-open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sheet-inner{
+  padding: 14px 14px 16px;
+}
+
+.sheet-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.sheet-title{
+  font-family: 'CinzelCustom', serif;
+  letter-spacing: 2px;
+  font-size: 13px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.sheet-close{
+  appearance: none;
+  border: 0;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Contact list layout */
+.contact-list{
+  display: grid;
+  gap: 10px;
+}
+
+.contact-row{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+
+  background: rgba(255,255,255,0.42);
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.contact-name{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  letter-spacing: 0.6px;
+}
+
+.contact-actions{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-link{
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.28);
+  border: 1px solid rgba(0,0,0,0.06);
+  text-decoration: none;
+}
+
+.icon-link:active{
+  background: rgba(255,255,255,0.38);
+}
+
+.icon-link img{
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  opacity: 0.95;
+}
+
+/* Two buttons side-by-side (map/calendar) */
+.sheet-grid2{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.big-icon-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  height: 56px;
+  border-radius: 16px;
+
+  background: rgba(255,255,255,0.42);
+  border: 1px solid rgba(0,0,0,0.06);
+  text-decoration: none;
+
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  letter-spacing: 0.6px;
+  color: var(--text);
+}
+
+.big-icon-btn:active{
+  background: rgba(255,255,255,0.52);
+}
+
+.big-icon-btn img{
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+/* Animations */
+@keyframes heroFade{ to{ opacity: 1; } }
+@keyframes basmalahIn{ to{ opacity: 1; transform: translateX(-50%) translateY(0); } }
+@keyframes zoomOut{
+  from{ transform: translate(-50%, -50%) scale(2); }
+  to{ transform: translate(-50%, -50%) scale(1.25); }
+}
+@keyframes fadeNames{ to{ opacity: 1; } }
 </style>
 </head>
 
 <body>
-
 <main class="frame">
 
   <!-- Section 1: Muka Depan -->
   <section class="hero">
     <img src="upload/design/arch.png" alt="Wedding Arch" class="arch">
+
     <div class="basmalah-text">
       بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
     </div>
+
     <div class="couple-names">
       <span>Nani</span>
       <span class="amp">&amp;</span>
@@ -544,7 +668,6 @@ body{
 
   <!-- Section 2: Jemputan -->
   <section class="section">
-
     <h1>اَلسَلامُ عَلَيْكُم وَرَحْمَةُ اَللهِ وَبَرَكاتُهُ</h1>
 
     <div class="parents-names">
@@ -564,9 +687,11 @@ body{
       Dengan penuh rasa kesyukuran, kami menjemput
     </div>
     <br>
+
     <div class="seasons-text guest-rotate">
       <i><strong id="guestRotateText">Dato &amp; Datin</strong></i>
     </div>
+
     <br>
     <div class="seasons-text">
       Sekeluarga ke Majlis Walimatulurus<br>
@@ -596,44 +721,37 @@ body{
       <span class="seasons-text">Masa</span><br>
       <strong class="gentium-text">11:00 AM - 4:00 PM</strong>
     </div>
-
   </section>
 
-<!-- Section 3: Itinerary -->
-<section class="itinerary-section section">
+  <!-- Section 3: Itinerary -->
+  <section class="itinerary-section section">
+    <img src="upload/design/Floral-Left.png" class="itinerary-floral left" alt="">
+    <img src="upload/design/Floral-Right.png" class="itinerary-floral right" alt="">
 
-  <img src="upload/design/Floral-Left.png" class="itinerary-floral left" alt="">
-  <img src="upload/design/Floral-Right.png" class="itinerary-floral right" alt="">
+    <div class="itinerary-content">
+      <div class="itinerary-title">Aturcara Majlis</div>
 
-  <div class="itinerary-content">
+      <div class="itinerary-item">
+        <div class="itinerary-time">11:00 AM</div>
+        <div class="itinerary-desc">Ketibaan Tetamu</div>
+      </div>
 
-    <div class="itinerary-title">
-      Aturcara Majlis
+      <div class="itinerary-item">
+        <div class="itinerary-time">12:30 PM</div>
+        <div class="itinerary-desc">Ketibaan Pengantin</div>
+      </div>
+
+      <div class="itinerary-item">
+        <div class="itinerary-time">1:00 PM</div>
+        <div class="itinerary-desc">Jamuan Makan</div>
+      </div>
+
+      <div class="itinerary-item">
+        <div class="itinerary-time">4:00 PM</div>
+        <div class="itinerary-desc">Majlis Bersurai</div>
+      </div>
     </div>
-
-    <div class="itinerary-item">
-      <div class="itinerary-time">11:00 AM</div>
-      <div class="itinerary-desc">Ketibaan Tetamu</div>
-    </div>
-
-    <div class="itinerary-item">
-      <div class="itinerary-time">12:30 PM</div>
-      <div class="itinerary-desc">Ketibaan Pengantin</div>
-    </div>
-
-    <div class="itinerary-item">
-      <div class="itinerary-time">1:00 PM</div>
-      <div class="itinerary-desc">Jamuan Makan</div>
-    </div>
-
-    <div class="itinerary-item">
-      <div class="itinerary-time">4:00 PM</div>
-      <div class="itinerary-desc">Majlis Bersurai</div>
-    </div>
-
-  </div>
-
-</section>
+  </section>
 
   <!-- Section 4: Countdown -->
   <section class="section countdown-section">
@@ -660,23 +778,51 @@ body{
         <div class="cd-label">SAAT</div>
       </div>
     </div>
-
-    
   </section>
 
 </main>
 
-<footer class="bottom-bar">
-  Static Bottom Bar
+<!-- Bottom bar -->
+<footer class="bottom-bar" aria-label="Quick actions">
+  <nav class="bottom-actions" aria-label="Bottom actions">
+    <!-- Telephone -->
+    <button type="button" class="bar-btn" data-sheet="contact" aria-label="Contact" aria-expanded="false">
+      <img src="upload/icon/contact.png" alt="Contact">
+    </button>
+
+    <!-- Map -->
+    <button type="button" class="bar-btn" data-sheet="map" aria-label="Map" aria-expanded="false">
+      <img src="upload/icon/map.png" alt="Map">
+    </button>
+
+    <!-- Calendar -->
+    <button type="button" class="bar-btn" data-sheet="calendar" aria-label="Calendar" aria-expanded="false">
+      <img src="upload/icon/calendar.png" alt="Calendar">
+    </button>
+  </nav>
 </footer>
+
+<!-- Backdrop + Sheet (single sheet, content swaps by JS) -->
+<div class="sheet-backdrop" id="sheetBackdrop" aria-hidden="true"></div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="sheet-inner">
+    <div class="sheet-header">
+      <div class="sheet-title" id="sheetTitle">Menu</div>
+      <button class="sheet-close" id="sheetClose" type="button" aria-label="Close">×</button>
+    </div>
+    <div id="sheetBody"></div>
+  </div>
+</div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-  // Fade-in/out for section elements
+  /* =========================
+     Fade-in/out for sections
+     ========================= */
   const elements = document.querySelectorAll(".section > *");
   const itineraryItems = document.querySelectorAll(".itinerary-item");
 
-  // Assign stagger delays (0ms, 120ms, 240ms, ...)
   itineraryItems.forEach((item, i) => {
     item.style.setProperty("--delay", `${i * 120}ms`);
   });
@@ -691,13 +837,14 @@ document.addEventListener("DOMContentLoaded", function() {
   elements.forEach(el => observer.observe(el));
   itineraryItems.forEach(el => observer.observe(el));
 
-  // Countdown (your existing code stays the same below)
+  /* =========================
+     Countdown
+     ========================= */
   const elDays  = document.getElementById("cd-days");
   const elHours = document.getElementById("cd-hours");
   const elMins  = document.getElementById("cd-mins");
   const elSecs  = document.getElementById("cd-secs");
-
-  const target = new Date(2026, 3, 12, 11, 0, 0);
+  const target = new Date(2026, 3, 12, 11, 0, 0); // 12 April 2026 11:00
 
   function pad(n){ return String(n).padStart(2, "0"); }
 
@@ -724,32 +871,30 @@ document.addEventListener("DOMContentLoaded", function() {
     elMins.textContent  = pad(mins);
     elSecs.textContent  = pad(secs);
   }
-
   tick();
   setInterval(tick, 1000);
 
-  // Guest title rotation (fade transition)
+  /* =========================
+     Guest title rotation
+     ========================= */
   const guestEl = document.getElementById("guestRotateText");
   const guestTitles = ["Dato & Datin", "Tuan & Puan", "Encik & Cik"];
   let guestIndex = 0;
 
   if (guestEl){
     setInterval(() => {
-      // fade out
       guestEl.classList.add("is-fading");
-
-      // swap text mid-fade
       setTimeout(() => {
         guestIndex = (guestIndex + 1) % guestTitles.length;
         guestEl.textContent = guestTitles[guestIndex];
-
-        // fade in
         guestEl.classList.remove("is-fading");
       }, 650);
-    }, 1500); // change speed here
+    }, 2200);
   }
 
-  // Section 3 floral enter/exit animation
+  /* =========================
+     Section 3 floral animation
+     ========================= */
   const itinerarySection = document.querySelector(".itinerary-section");
   if (itinerarySection){
     const itineraryObserver = new IntersectionObserver((entries) => {
@@ -758,10 +903,210 @@ document.addEventListener("DOMContentLoaded", function() {
         else itinerarySection.classList.remove("itinerary-inview");
       });
     }, { threshold: 0.25 });
-
     itineraryObserver.observe(itinerarySection);
   }
 
+  /* =========================
+     Bottom bar sheets
+     ========================= */
+
+  // ✅ EDIT THESE CONTACTS
+  const CONTACTS = [
+    { name: "Adi", phone: "+60126241923" },
+    { name: "Nani", phone: "+60142302687" },
+    { name: "Azwir", phone: "+60178722618" },
+  ];
+
+  // Venue map links
+  const GMAPS_URL = "https://maps.app.goo.gl/X7VrjR8dZcydcZ2S9";
+  const WAZE_URL  = "https://www.waze.com/en/live-map/directions?latlng=2.732022%2C101.967709";
+
+  // Calendar details (used for Google + Apple .ics)
+  const EVENT = {
+    title: "Walimatulurus Azwir & Nani",
+    location: "Lot 142, Jalan Bahagia 1, Kampung Bahagia Jiboi, Ampangan, 70400 Seremban, Negeri Sembilan",
+    start: new Date(2026, 3, 12, 11, 0, 0), // Apr 12 2026 11:00
+    end:   new Date(2026, 3, 12, 16, 0, 0), // Apr 12 2026 16:00
+    description: "Walimatulurus Azwir & Nani"
+  };
+
+  const barBtns = document.querySelectorAll(".bar-btn");
+  const sheet = document.getElementById("sheet");
+  const sheetBackdrop = document.getElementById("sheetBackdrop");
+  const sheetClose = document.getElementById("sheetClose");
+  const sheetTitle = document.getElementById("sheetTitle");
+  const sheetBody = document.getElementById("sheetBody");
+
+  let openSheetKey = null;
+
+  function escapeText(s){
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  function formatICSDate(d){
+    // UTC format: YYYYMMDDTHHMMSSZ
+    const yyyy = d.getUTCFullYear();
+    const mm = String(d.getUTCMonth()+1).padStart(2,"0");
+    const dd = String(d.getUTCDate()).padStart(2,"0");
+    const hh = String(d.getUTCHours()).padStart(2,"0");
+    const mi = String(d.getUTCMinutes()).padStart(2,"0");
+    const ss = String(d.getUTCSeconds()).padStart(2,"0");
+    return `${yyyy}${mm}${dd}T${hh}${mi}${ss}Z`;
+  }
+
+  function openSheet(key){
+    openSheetKey = key;
+
+    // Update aria-expanded on buttons
+    barBtns.forEach(btn => btn.setAttribute("aria-expanded", btn.dataset.sheet === key ? "true" : "false"));
+
+    // Fill content
+    if (key === "contact"){
+      sheetTitle.textContent = "Contact";
+      const rows = CONTACTS.map(c => {
+        const tel = `tel:${c.phone}`;
+        // WhatsApp: use wa.me without "+" sign
+        const waNumber = c.phone.replace(/[^\d]/g, "");
+        const wa = `https://wa.me/${waNumber}`;
+        return `
+          <div class="contact-row">
+            <div class="contact-name">${escapeText(c.name)}</div>
+            <div class="contact-actions">
+              <a class="icon-link" href="${tel}" aria-label="Telephone ${escapeText(c.name)}">
+                <img src="upload/icon/telephone.png" alt="Telephone">
+              </a>
+              <a class="icon-link" href="${wa}" target="_blank" rel="noopener" aria-label="WhatsApp ${escapeText(c.name)}">
+                <img src="upload/icon/whatsapp.png" alt="WhatsApp">
+              </a>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      sheetBody.innerHTML = `<div class="contact-list">${rows}</div>`;
+    }
+
+    if (key === "map"){
+      sheetTitle.textContent = "Location";
+      sheetBody.innerHTML = `
+        <div class="sheet-grid2">
+          <a class="big-icon-btn" href="${GMAPS_URL}" target="_blank" rel="noopener" aria-label="Open Google Maps">
+            <img src="upload/icon/gmaps.png" alt="Google Maps"> Google Maps
+          </a>
+          <a class="big-icon-btn" href="${WAZE_URL}" target="_blank" rel="noopener" aria-label="Open Waze">
+            <img src="upload/icon/waze.png" alt="Waze"> Waze
+          </a>
+        </div>
+      `;
+    }
+
+    if (key === "calendar"){
+      sheetTitle.textContent = "Calendar";
+
+      // Build Google Calendar link
+      // Use UTC timestamps in the URL (Google accepts Z format)
+      const startUTC = formatICSDate(EVENT.start);
+      const endUTC   = formatICSDate(EVENT.end);
+      const gcalUrl =
+        "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+        `&text=${encodeURIComponent(EVENT.title)}` +
+        `&dates=${encodeURIComponent(startUTC + "/" + endUTC)}` +
+        `&details=${encodeURIComponent(EVENT.description)}` +
+        `&location=${encodeURIComponent(EVENT.location)}`;
+
+      sheetBody.innerHTML = `
+        <div class="sheet-grid2">
+          <a class="big-icon-btn" href="${gcalUrl}" target="_blank" rel="noopener" aria-label="Add to Google Calendar">
+            <img src="upload/icon/google.png" alt="Google Calendar"> Google
+          </a>
+          <a class="big-icon-btn" href="#" id="appleCalBtn" aria-label="Add to Apple Calendar">
+            <img src="upload/icon/apple.png" alt="Apple Calendar"> Apple
+          </a>
+        </div>
+      `;
+
+      // Apple calendar download (.ics)
+      const appleBtn = document.getElementById("appleCalBtn");
+      if (appleBtn){
+        appleBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          const dtStamp = formatICSDate(new Date());
+          const dtStart = formatICSDate(new Date(EVENT.start.getTime()));
+          const dtEnd   = formatICSDate(new Date(EVENT.end.getTime()));
+
+          const ics =
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Wedding Invite//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:${Date.now()}@invite
+DTSTAMP:${dtStamp}
+DTSTART:${dtStart}
+DTEND:${dtEnd}
+SUMMARY:${EVENT.title}
+DESCRIPTION:${EVENT.description}
+LOCATION:${EVENT.location}
+END:VEVENT
+END:VCALENDAR`;
+
+          const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "walimatulurus.ics";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+
+          setTimeout(() => URL.revokeObjectURL(url), 1500);
+        }, { once: true });
+      }
+    }
+
+    // Show sheet
+    sheet.classList.add("is-open");
+    sheetBackdrop.classList.add("is-open");
+    sheet.setAttribute("aria-hidden", "false");
+    sheetBackdrop.setAttribute("aria-hidden", "false");
+  }
+
+  function closeSheet(){
+    openSheetKey = null;
+    barBtns.forEach(btn => btn.setAttribute("aria-expanded", "false"));
+
+    sheet.classList.remove("is-open");
+    sheetBackdrop.classList.remove("is-open");
+    sheet.setAttribute("aria-hidden", "true");
+    sheetBackdrop.setAttribute("aria-hidden", "true");
+
+    // Clear body after animation to avoid stale handlers
+    setTimeout(() => {
+      if (!sheet.classList.contains("is-open")) sheetBody.innerHTML = "";
+    }, 260);
+  }
+
+  function toggleSheet(key){
+    if (openSheetKey === key) closeSheet();
+    else openSheet(key);
+  }
+
+  barBtns.forEach(btn => {
+    btn.addEventListener("click", () => toggleSheet(btn.dataset.sheet));
+  });
+
+  sheetClose.addEventListener("click", closeSheet);
+  sheetBackdrop.addEventListener("click", closeSheet);
+
+  // ESC to close (desktop)
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && openSheetKey) closeSheet();
+  });
 });
 </script>
 
