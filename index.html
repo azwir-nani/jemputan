@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -76,6 +77,129 @@ body{
   padding-bottom: calc(
     var(--bar-height) + (var(--bar-gap) * 2) + env(safe-area-inset-bottom)
   );
+}
+
+/* =========================
+   OPENING OVERLAY
+   ========================= */
+.opening-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}
+
+.opening-panel{
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background: #F0F0F0;
+  /* subtle glass look */
+  background: rgba(240,240,240,0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: transform 0.9s cubic-bezier(.22,.61,.36,1), opacity 0.8s ease;
+  opacity: 1;
+}
+
+.opening-panel.left{ left: 0; transform: translateX(0); }
+.opening-panel.right{ right: 0; transform: translateX(0); }
+
+/* center content */
+.opening-center{
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  transform: translateY(-10px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* Dynamic circle size */
+.opening-btn{
+  --btnSize: clamp(110px, 30vw, 150px);
+
+  width: var(--btnSize);
+  height: var(--btnSize);
+
+  border-radius: 999px;
+  display: flex;                 /* use flex for perfect centering */
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  border: 1px solid rgba(184,135,11,0.35);
+
+  background: rgba(242, 230, 211, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.16),
+    0 3px 10px rgba(0,0,0,0.08);
+
+  transition: transform 0.25s ease, opacity 0.45s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  overflow: hidden;
+}
+
+.opening-btn:active{
+  transform: scale(0.97);
+}
+
+/* Dynamic initial size (scales with circle) */
+.opening-initial{
+  font-family: 'Tangerine', cursive;
+  font-weight: 700;
+
+  font-size: calc(var(--btnSize) * 0.4);
+  line-height: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-4%);   /* optical correction for calligraphy */
+
+  color: transparent;
+  background: linear-gradient(
+    180deg,
+    #FFF0A6 0%,
+    #B8870B 35%,
+    #B8870B 75%,
+    #FFF0A6 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.opening-sub{
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 3px;
+  font-size: 14px;
+  color: rgba(59,52,43,0.85);
+}
+
+/* start animation state */
+.opening-overlay.is-opening .opening-center{
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.opening-overlay.is-opening .opening-panel.left{
+  transform: translateX(-102%);
+  opacity: 0;
+}
+
+.opening-overlay.is-opening .opening-panel.right{
+  transform: translateX(102%);
+  opacity: 0;
 }
 
 /* Section 1: Hero */
@@ -645,6 +769,20 @@ body{
 </head>
 
 <body>
+
+<!-- OPENING OVERLAY -->
+<div class="opening-overlay" id="openingOverlay" aria-label="Open invitation">
+  <div class="opening-panel left" aria-hidden="true"></div>
+  <div class="opening-panel right" aria-hidden="true"></div>
+
+  <div class="opening-center">
+    <div class="opening-btn" id="openingBtn" role="button" tabindex="0" aria-label="Buka jemputan">
+      <div class="opening-initial">NA</div>
+    </div>
+    <div class="opening-sub">BUKA</div>
+  </div>
+</div>
+
 <main class="frame">
 
   <!-- Section 1: Muka Depan -->
@@ -742,7 +880,7 @@ body{
       </div>
 
       <div class="itinerary-item">
-        <div class="itinerary-time">1:00 PM</div>
+        <div class="itinerary-time">1:30 PM</div>
         <div class="itinerary-desc">Jamuan Makan Beradab</div>
       </div>
 
@@ -785,24 +923,21 @@ body{
 <!-- Bottom bar -->
 <footer class="bottom-bar" aria-label="Quick actions">
   <nav class="bottom-actions" aria-label="Bottom actions">
-    <!-- Telephone -->
     <button type="button" class="bar-btn" data-sheet="contact" aria-label="Contact" aria-expanded="false">
-      <img src="upload/icon/contact.png" alt="Contact">
+      <img src="upload/icon/contact.svg" alt="Contact">
     </button>
 
-    <!-- Map -->
     <button type="button" class="bar-btn" data-sheet="map" aria-label="Map" aria-expanded="false">
-      <img src="upload/icon/map.png" alt="Map">
+      <img src="upload/icon/map.svg" alt="Map">
     </button>
 
-    <!-- Calendar -->
     <button type="button" class="bar-btn" data-sheet="calendar" aria-label="Calendar" aria-expanded="false">
-      <img src="upload/icon/calendar.png" alt="Calendar">
+      <img src="upload/icon/calendar.svg" alt="Calendar">
     </button>
   </nav>
 </footer>
 
-<!-- Backdrop + Sheet (single sheet, content swaps by JS) -->
+<!-- Backdrop + Sheet -->
 <div class="sheet-backdrop" id="sheetBackdrop" aria-hidden="true"></div>
 
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-hidden="true">
@@ -817,6 +952,34 @@ body{
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+
+  /* =========================
+     OPENING OVERLAY logic
+     ========================= */
+  const openingOverlay = document.getElementById("openingOverlay");
+  const openingBtn = document.getElementById("openingBtn");
+
+  function openInvitation(){
+    if (!openingOverlay) return;
+    openingOverlay.classList.add("is-opening");
+
+    // Remove overlay after animation completes
+    setTimeout(() => {
+      openingOverlay.remove();
+    }, 800);
+  }
+
+  if (openingBtn){
+    openingBtn.addEventListener("click", openInvitation);
+    // keyboard accessibility
+    openingBtn.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openInvitation();
+      }
+    });
+  }
+
   /* =========================
      Fade-in/out for sections
      ========================= */
@@ -910,23 +1073,20 @@ document.addEventListener("DOMContentLoaded", function() {
      Bottom bar sheets
      ========================= */
 
-  // ✅ EDIT THESE CONTACTS
   const CONTACTS = [
     { name: "Adi", phone: "+60126241923" },
     { name: "Nani", phone: "+60142302687" },
     { name: "Azwir", phone: "+60178722618" },
   ];
 
-  // Venue map links
   const GMAPS_URL = "https://maps.app.goo.gl/X7VrjR8dZcydcZ2S9";
   const WAZE_URL  = "https://www.waze.com/en/live-map/directions?latlng=2.732022%2C101.967709";
 
-  // Calendar details (used for Google + Apple .ics)
   const EVENT = {
     title: "Walimatulurus Azwir & Nani",
     location: "Lot 142, Jalan Bahagia 1, Kampung Bahagia Jiboi, Ampangan, 70400 Seremban, Negeri Sembilan",
-    start: new Date(2026, 3, 12, 11, 0, 0), // Apr 12 2026 11:00
-    end:   new Date(2026, 3, 12, 16, 0, 0), // Apr 12 2026 16:00
+    start: new Date(2026, 3, 12, 11, 0, 0),
+    end:   new Date(2026, 3, 12, 16, 0, 0),
     description: "Walimatulurus Azwir & Nani"
   };
 
@@ -946,7 +1106,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function formatICSDate(d){
-    // UTC format: YYYYMMDDTHHMMSSZ
     const yyyy = d.getUTCFullYear();
     const mm = String(d.getUTCMonth()+1).padStart(2,"0");
     const dd = String(d.getUTCDate()).padStart(2,"0");
@@ -958,16 +1117,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function openSheet(key){
     openSheetKey = key;
-
-    // Update aria-expanded on buttons
     barBtns.forEach(btn => btn.setAttribute("aria-expanded", btn.dataset.sheet === key ? "true" : "false"));
 
-    // Fill content
     if (key === "contact"){
       sheetTitle.textContent = "Hubungi";
       const rows = CONTACTS.map(c => {
         const tel = `tel:${c.phone}`;
-        // WhatsApp: use wa.me without "+" sign
         const waNumber = c.phone.replace(/[^\d]/g, "");
         const wa = `https://wa.me/${waNumber}`;
         return `
@@ -975,16 +1130,15 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="contact-name">${escapeText(c.name)}</div>
             <div class="contact-actions">
               <a class="icon-link" href="${tel}" aria-label="Telephone ${escapeText(c.name)}">
-                <img src="upload/icon/telephone.png" alt="Telephone">
+                <img src="upload/icon/telephone.svg" alt="Telephone">
               </a>
               <a class="icon-link" href="${wa}" target="_blank" rel="noopener" aria-label="WhatsApp ${escapeText(c.name)}">
-                <img src="upload/icon/whatsapp.png" alt="WhatsApp">
+                <img src="upload/icon/whatsapp.svg" alt="WhatsApp">
               </a>
             </div>
           </div>
         `;
       }).join("");
-
       sheetBody.innerHTML = `<div class="contact-list">${rows}</div>`;
     }
 
@@ -993,10 +1147,10 @@ document.addEventListener("DOMContentLoaded", function() {
       sheetBody.innerHTML = `
         <div class="sheet-grid2">
           <a class="big-icon-btn" href="${GMAPS_URL}" target="_blank" rel="noopener" aria-label="Open Google Maps">
-            <img src="upload/icon/gmaps.png" alt="Google Maps"> Google Maps
+            <img src="upload/icon/gmaps.svg" alt="Google Maps"> Maps
           </a>
           <a class="big-icon-btn" href="${WAZE_URL}" target="_blank" rel="noopener" aria-label="Open Waze">
-            <img src="upload/icon/waze.png" alt="Waze"> Waze
+            <img src="upload/icon/waze.svg" alt="Waze"> Waze
           </a>
         </div>
       `;
@@ -1004,9 +1158,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (key === "calendar"){
       sheetTitle.textContent = "Kalendar";
-
-      // Build Google Calendar link
-      // Use UTC timestamps in the URL (Google accepts Z format)
       const startUTC = formatICSDate(EVENT.start);
       const endUTC   = formatICSDate(EVENT.end);
       const gcalUrl =
@@ -1019,15 +1170,14 @@ document.addEventListener("DOMContentLoaded", function() {
       sheetBody.innerHTML = `
         <div class="sheet-grid2">
           <a class="big-icon-btn" href="${gcalUrl}" target="_blank" rel="noopener" aria-label="Add to Google Calendar">
-            <img src="upload/icon/google.png" alt="Google Calendar"> Google
+            <img src="upload/icon/google.svg" alt="Google Calendar"> Google
           </a>
           <a class="big-icon-btn" href="#" id="appleCalBtn" aria-label="Add to Apple Calendar">
-            <img src="upload/icon/apple.png" alt="Apple Calendar"> Apple
+            <img src="upload/icon/apple.svg" alt="Apple Calendar"> Apple
           </a>
         </div>
       `;
 
-      // Apple calendar download (.ics)
       const appleBtn = document.getElementById("appleCalBtn");
       if (appleBtn){
         appleBtn.addEventListener("click", (e) => {
@@ -1069,7 +1219,6 @@ END:VCALENDAR`;
       }
     }
 
-    // Show sheet
     sheet.classList.add("is-open");
     sheetBackdrop.classList.add("is-open");
     sheet.setAttribute("aria-hidden", "false");
@@ -1085,7 +1234,6 @@ END:VCALENDAR`;
     sheet.setAttribute("aria-hidden", "true");
     sheetBackdrop.setAttribute("aria-hidden", "true");
 
-    // Clear body after animation to avoid stale handlers
     setTimeout(() => {
       if (!sheet.classList.contains("is-open")) sheetBody.innerHTML = "";
     }, 260);
@@ -1103,7 +1251,6 @@ END:VCALENDAR`;
   sheetClose.addEventListener("click", closeSheet);
   sheetBackdrop.addEventListener("click", closeSheet);
 
-  // ESC to close (desktop)
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && openSheetKey) closeSheet();
   });
