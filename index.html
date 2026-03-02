@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">\
 
 <style>
 :root{
@@ -119,7 +120,7 @@ body{
   transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
-/* Dynamic circle size */
+/* Circle + glow pulse */
 .opening-btn{
   --btnSize: clamp(110px, 30vw, 150px);
 
@@ -127,16 +128,18 @@ body{
   height: var(--btnSize);
 
   border-radius: 999px;
-  display: flex;                 /* use flex for perfect centering */
+  display: flex;
   align-items: center;
   justify-content: center;
 
+  position: relative;           /* needed for ring */
   cursor: pointer;
-  border: 1px solid rgba(184,135,11,0.35);
 
   background: rgba(242, 230, 211, 0.55);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(184,135,11,0.28);
 
   box-shadow:
     0 18px 40px rgba(0,0,0,0.16),
@@ -146,34 +149,75 @@ body{
   -webkit-tap-highlight-color: transparent;
 
   overflow: hidden;
+
+  /* soft pulse */
+  animation: glowPulse 2.6s ease-in-out infinite;
 }
 
-.opening-btn:active{
-  transform: scale(0.97);
+.opening-btn:active{ transform: scale(0.97); }
+
+/* Stop pulse once opening starts */
+.opening-overlay.is-opening .opening-btn{
+  animation: none;
 }
 
-/* Dynamic initial size (scales with circle) */
+/* Rotating gold ring */
+.opening-btn::before{
+  content:"";
+  position:absolute;
+  inset: -8px;                  /* ring sits outside circle */
+  border-radius: 999px;
+  padding: 2px;                 /* ring thickness */
+
+  background: conic-gradient(
+    from 0deg,
+    rgba(255,240,166,0.00) 0%,
+    rgba(255,240,166,0.65) 15%,
+    rgba(184,135,11,0.85) 35%,
+    rgba(255,240,166,0.65) 55%,
+    rgba(255,240,166,0.00) 80%,
+    rgba(255,240,166,0.00) 100%
+  );
+
+  /* make it a ring */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0.9;
+  filter: blur(0.2px);
+
+  animation: ringSpin 4s linear infinite;
+  pointer-events: none;
+}
+
+/* Subtle soft highlight ring (optional but premium) */
+.opening-btn::after{
+  content:"";
+  position:absolute;
+  inset: -4px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,240,166,0.35);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Stop ring once opening starts */
+.opening-overlay.is-opening .opening-btn::before{
+  animation: none;
+  opacity: 0.35;
+}
+
 .opening-initial{
   font-family: 'Tangerine', cursive;
   font-weight: 700;
-
-  font-size: calc(var(--btnSize) * 0.4);
+  font-size: calc(var(--btnSize) * 0.55);
   line-height: 1;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transform: translateY(-4%);   /* optical correction for calligraphy */
+  transform: translateY(-4%);
 
   color: transparent;
-  background: linear-gradient(
-    180deg,
-    #FFF0A6 0%,
-    #B8870B 35%,
-    #B8870B 75%,
-    #FFF0A6 100%
-  );
+  background: linear-gradient(180deg, #FFF0A6 0%, #B8870B 35%, #B8870B 75%, #FFF0A6 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }
@@ -578,12 +622,16 @@ body{
   background: rgba(255,255,255,0.25);
 }
 
-.bottom-actions img{
-  width: clamp(22px, 6vw, 30px);
-  height: clamp(22px, 6vw, 30px);
-  object-fit: contain;
-  opacity: 0.92;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.08));
+.bottom-actions i{
+  font-size: clamp(22px, 6vw, 30px);
+  background: linear-gradient(180deg,#FFF0A6 0%,#B8870B 60%,#FFF0A6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bottom-actions button:active i{
+  transform: scale(0.92);
+  opacity: 0.8;
 }
 
 /* =========================
@@ -714,9 +762,9 @@ body{
   background: rgba(255,255,255,0.38);
 }
 
-.icon-link img{
-  width: 22px;
-  height: 22px;
+.icon-link i{
+  font-size: 20px;
+  color: #B8870B;
   object-fit: contain;
   opacity: 0.95;
 }
@@ -751,11 +799,25 @@ body{
   background: rgba(255,255,255,0.52);
 }
 
-.big-icon-btn img{
-  width: 26px;
-  height: 26px;
+.big-icon-btn i{
+  font-size: 22px;
+  color: #B8870B;
   object-fit: contain;
 }
+
+.waze-icon,
+.gmaps-icon{
+  width: 25px;
+  height: 25px;
+  display: block;
+  flex-shrink: 0;
+  color: #B8870B;
+}
+
+.gmaps-icon{
+  transform: scale(0.95);
+}
+
 
 /* Animations */
 @keyframes heroFade{ to{ opacity: 1; } }
@@ -765,6 +827,24 @@ body{
   to{ transform: translate(-50%, -50%) scale(1.25); }
 }
 @keyframes fadeNames{ to{ opacity: 1; } }
+@keyframes ringSpin{
+  to{ transform: rotate(360deg); }
+}
+
+@keyframes glowPulse{
+  0%, 100%{
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.16),
+      0 3px 10px rgba(0,0,0,0.08),
+      0 0 0 0 rgba(184,135,11,0.12);
+  }
+  50%{
+    box-shadow:
+      0 18px 40px rgba(0,0,0,0.16),
+      0 3px 10px rgba(0,0,0,0.08),
+      0 0 0 12px rgba(184,135,11,0.06);
+  }
+}
 </style>
 </head>
 
@@ -923,16 +1003,16 @@ body{
 <!-- Bottom bar -->
 <footer class="bottom-bar" aria-label="Quick actions">
   <nav class="bottom-actions" aria-label="Bottom actions">
-    <button type="button" class="bar-btn" data-sheet="contact" aria-label="Contact" aria-expanded="false">
-      <img src="upload/icon/contact.svg" alt="Contact">
+    <button type="button" class="bar-btn" data-sheet="contact" aria-label="Contact">
+      <i class="bi bi-person"></i>
     </button>
 
-    <button type="button" class="bar-btn" data-sheet="map" aria-label="Map" aria-expanded="false">
-      <img src="upload/icon/map.svg" alt="Map">
+    <button type="button" class="bar-btn" data-sheet="map" aria-label="Map">
+      <i class="bi bi-geo-alt"></i>
     </button>
 
-    <button type="button" class="bar-btn" data-sheet="calendar" aria-label="Calendar" aria-expanded="false">
-      <img src="upload/icon/calendar.svg" alt="Calendar">
+    <button type="button" class="bar-btn" data-sheet="calendar" aria-label="Calendar">
+      <i class="bi bi-calendar-event"></i>
     </button>
   </nav>
 </footer>
@@ -1130,10 +1210,10 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="contact-name">${escapeText(c.name)}</div>
             <div class="contact-actions">
               <a class="icon-link" href="${tel}" aria-label="Telephone ${escapeText(c.name)}">
-                <img src="upload/icon/telephone.svg" alt="Telephone">
+                <i class="bi bi-telephone"></i>
               </a>
               <a class="icon-link" href="${wa}" target="_blank" rel="noopener" aria-label="WhatsApp ${escapeText(c.name)}">
-                <img src="upload/icon/whatsapp.svg" alt="WhatsApp">
+                <i class="bi bi-whatsapp"></i>
               </a>
             </div>
           </div>
@@ -1147,10 +1227,25 @@ document.addEventListener("DOMContentLoaded", function() {
       sheetBody.innerHTML = `
         <div class="sheet-grid2">
           <a class="big-icon-btn" href="${GMAPS_URL}" target="_blank" rel="noopener" aria-label="Open Google Maps">
-            <img src="upload/icon/gmaps.svg" alt="Google Maps"> Maps
+            <svg class="gmaps-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92.3 132.3" aria-hidden="true">
+              <path fill="currentColor" d="M60.2 2.2C55.8.8 51 0 46.1 0 32 0 19.3 6.4 10.8 16.5l21.8 18.3L60.2 2.2z"/>
+              <path fill="currentColor" d="M10.8 16.5C4.1 24.5 0 34.9 0 46.1c0 8.7 1.7 15.7 4.6 22l28-33.3-21.8-18.3z"/>
+              <path fill="currentColor" d="M46.2 28.5c9.8 0 17.7 7.9 17.7 17.7 0 4.3-1.6 8.3-4.2 11.4 0 0 13.9-16.6 27.5-32.7-5.6-10.8-15.3-19-27-22.7L32.6 34.8c3.3-3.8 8.1-6.3 13.6-6.3"/>
+              <path fill="currentColor" d="M46.2 63.8c-9.8 0-17.7-7.9-17.7-17.7 0-4.3 1.5-8.3 4.1-11.3l-28 33.3c4.8 10.6 12.8 19.2 21 29.9l34.1-40.5c-3.3 3.9-8.1 6.3-13.5 6.3"/>
+              <path fill="currentColor" d="M59.1 109.2c15.4-24.1 33.3-35 33.3-63 0-7.7-1.9-14.9-5.2-21.3L25.6 98c2.6 3.4 5.3 7.3 7.9 11.3 9.4 14.5 6.8 23.1 12.8 23.1s3.4-8.7 12.8-23.2"/>
+            </svg>
+            Google Maps
           </a>
-          <a class="big-icon-btn" href="${WAZE_URL}" target="_blank" rel="noopener" aria-label="Open Waze">
-            <img src="upload/icon/waze.svg" alt="Waze"> Waze
+          <a class="big-icon-btn" href="${WAZE_URL}" target="_blank" rel="noopener">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 640 640"
+              class="waze-icon"
+              aria-hidden="true"
+            >
+              <path fill="currentColor" d="M566.6 265.7C581.1 351.6 535.7 433.6 453.4 473.8C466.4 507.9 441 544 405.1 544C391.9 544 379.1 538.9 369.5 529.8C359.9 520.7 354.2 508.2 353.5 495C347.1 495.2 289.3 495 277.2 494.4C276.9 501.2 275.3 507.9 272.5 514C269.7 520.1 265.6 525.7 260.6 530.3C255.6 534.9 249.8 538.5 243.4 540.8C237 543.1 230.2 544.2 223.5 543.9C189.6 542.5 165.5 509.1 176.5 476C139.3 462.9 104 441.1 76.9 405.2C63.9 387.9 76.4 363.4 97.7 363.4C144 363.4 129.9 309.2 140.9 253.1C159.3 159.2 257.7 96 352.6 96C455.1 96 549.8 166.7 566.7 265.7zM437.9 452.3C479.9 433.1 519.2 395.6 534.2 350.2C574.7 227.1 470 122.2 352.5 122.2C269.1 122.2 182.2 177.6 166.4 258.2C156.9 307.1 171.4 389.6 97.7 389.6C122.6 422.7 156 442.2 191.4 453.6C216.1 431.8 255.3 438.1 271.2 467.9C285.4 468.9 350.4 469.1 359.1 468.7C362.6 461.8 367.6 455.8 373.8 451.2C380 446.6 387 443.3 394.6 441.7C402.2 440.1 410 440.3 417.5 442.1C425 443.9 432 447.4 438 452.3zM269.5 251.1C269.5 216.4 320.3 216.4 320.3 251.1C320.3 285.8 269.5 285.8 269.5 251.1zM386.1 251.1C386.1 216.4 437 216.4 437 251.1C437 285.8 386.1 285.9 386.1 251.1zM263.5 321.8C260.1 304.9 285.7 299.6 289.1 316.6L289.2 316.9C293.3 338.3 319 360.9 353.3 360C389 359.1 412.6 337.8 417.4 317.2C421.9 301.1 446 306.8 442.9 323.2C437.7 345.4 411.7 385.2 351.4 386.1C308.8 386.1 270.5 358.3 263.5 321.9L263.5 321.9z"/>
+            </svg>
+            Waze
           </a>
         </div>
       `;
@@ -1170,10 +1265,10 @@ document.addEventListener("DOMContentLoaded", function() {
       sheetBody.innerHTML = `
         <div class="sheet-grid2">
           <a class="big-icon-btn" href="${gcalUrl}" target="_blank" rel="noopener" aria-label="Add to Google Calendar">
-            <img src="upload/icon/google.svg" alt="Google Calendar"> Google
+            <i class="bi bi-google"></i> Google
           </a>
           <a class="big-icon-btn" href="#" id="appleCalBtn" aria-label="Add to Apple Calendar">
-            <img src="upload/icon/apple.svg" alt="Apple Calendar"> Apple
+            <i class="bi bi-apple"></i> Apple
           </a>
         </div>
       `;
