@@ -5,11 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Walimatul Urus | Azwir x Nani</title>
 
+<!-- Perf: preconnect for faster font CSS + font files -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">\
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
 :root{
@@ -765,7 +770,7 @@ body{
 .icon-link i{
   font-size: 20px;
   color: #B8870B;
-  object-fit: contain;
+  /* object-fit: contain; */
   opacity: 0.95;
 }
 
@@ -802,7 +807,7 @@ body{
 .big-icon-btn i{
   font-size: 22px;
   color: #B8870B;
-  object-fit: contain;
+  /* object-fit: contain; */
 }
 
 .waze-icon,
@@ -867,7 +872,11 @@ body{
 
   <!-- Section 1: Muka Depan -->
   <section class="hero">
-    <img src="upload/design/arch.png" alt="Wedding Arch" class="arch">
+    <img src="upload/design/arch.png"
+          alt="Wedding Arch"
+          class="arch"
+          decoding="async"
+          fetchpriority="high">
 
     <div class="basmalah-text">
       بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
@@ -1003,15 +1012,15 @@ body{
 <!-- Bottom bar -->
 <footer class="bottom-bar" aria-label="Quick actions">
   <nav class="bottom-actions" aria-label="Bottom actions">
-    <button type="button" class="bar-btn" data-sheet="contact" aria-label="Contact">
+    <button type="button" class="bar-btn" data-sheet="contact" aria-label="Contact" aria-expanded="false">
       <i class="bi bi-person"></i>
     </button>
 
-    <button type="button" class="bar-btn" data-sheet="map" aria-label="Map">
+    <button type="button" class="bar-btn" data-sheet="map" aria-label="Map" aria-expanded="false">
       <i class="bi bi-geo-alt"></i>
     </button>
 
-    <button type="button" class="bar-btn" data-sheet="calendar" aria-label="Calendar">
+    <button type="button" class="bar-btn" data-sheet="calendar" aria-label="Calendar" aria-expanded="false">
       <i class="bi bi-calendar-event"></i>
     </button>
   </nav>
