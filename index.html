@@ -9,10 +9,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+<link rel="preload" href="upload/fonts/ImperiaB.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="upload/fonts/AlexBrush.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="upload/fonts/Cinzel.woff2" as="font" type="font/woff2" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus:wght@400;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -35,21 +40,24 @@
 /* Fonts */
 @font-face{
   font-family: 'ImperiaB';
-  src: url('upload/fonts/ImperiaB.ttf') format('truetype');
+  src: url('upload/fonts/ImperiaB.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 @font-face{
   font-family: 'AlexBrush';
-  src: url('upload/fonts/AlexBrush.ttf') format('truetype');
+  src: url('upload/fonts/AlexBrush.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 @font-face{
   font-family: 'CinzelCustom';
-  src: url('upload/fonts/Cinzel.otf') format('opentype');
+  src: url('upload/fonts/Cinzel.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Scroll Fade Animation */
@@ -102,13 +110,14 @@ body{
   top: 0;
   height: 100%;
   width: 50%;
-  background: #F0F0F0;
+  /* background: #F0F0F0; */
   /* subtle glass look */
   background: rgba(240,240,240,0.92);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  transition: transform 0.9s cubic-bezier(.22,.61,.36,1), opacity 0.8s ease;
+  transition: transform 0.9s cubic-bezier(.22,.61,.36,1), opacity 0.9s ease;
   opacity: 1;
+  will-change: transform, opacity;
 }
 
 .opening-panel.left{ left: 0; transform: translateX(0); }
@@ -285,6 +294,7 @@ body{
   object-fit: cover;
   transform: translate(-50%, -50%) scale(1);
   animation: zoomOut 2.8s cubic-bezier(.22,.61,.36,1) forwards;
+  will-change: transform, opacity;
 }
 
 .hero .basmalah-text{
@@ -592,6 +602,7 @@ body{
     0 2px 8px rgba(0,0,0,0.06);
 
   z-index: 1000;
+  will-change: transform, opacity;
 }
 
 /* Bottom bar icon buttons */
@@ -677,6 +688,7 @@ body{
   transition: opacity 0.28s ease, transform 0.32s ease;
 
   z-index: 1300;
+  will-change: transform, opacity;
 }
 
 .sheet.is-open{
@@ -952,8 +964,8 @@ body{
 
   <!-- Section 3: Itinerary -->
   <section class="itinerary-section section">
-    <img src="upload/design/Floral-Left.png" class="itinerary-floral left" alt="">
-    <img src="upload/design/Floral-Right.png" class="itinerary-floral right" alt="">
+    <img src="upload/design/Floral-Left.png" class="itinerary-floral left" alt="" loading="lazy" decoding="async">
+    <img src="upload/design/Floral-Right.png" class="itinerary-floral right" alt="" loading="lazy" decoding="async">
 
     <div class="itinerary-content">
       <div class="itinerary-title">Aturcara Majlis</div>
@@ -1055,7 +1067,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Remove overlay after animation completes
     setTimeout(() => {
       openingOverlay.remove();
-    }, 800);
+    }, 910);
   }
 
   if (openingBtn){
@@ -1292,21 +1304,21 @@ document.addEventListener("DOMContentLoaded", function() {
           const dtEnd   = formatICSDate(new Date(EVENT.end.getTime()));
 
           const ics =
-`BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Wedding Invite//EN
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
-BEGIN:VEVENT
-UID:${Date.now()}@invite
-DTSTAMP:${dtStamp}
-DTSTART:${dtStart}
-DTEND:${dtEnd}
-SUMMARY:${EVENT.title}
-DESCRIPTION:${EVENT.description}
-LOCATION:${EVENT.location}
-END:VEVENT
-END:VCALENDAR`;
+            `BEGIN:VCALENDAR
+            VERSION:2.0
+            PRODID:-//Wedding Invite//EN
+            CALSCALE:GREGORIAN
+            METHOD:PUBLISH
+            BEGIN:VEVENT
+            UID:${Date.now()}@invite
+            DTSTAMP:${dtStamp}
+            DTSTART:${dtStart}
+            DTEND:${dtEnd}
+            SUMMARY:${EVENT.title}
+            DESCRIPTION:${EVENT.description}
+            LOCATION:${EVENT.location}
+            END:VEVENT
+            END:VCALENDAR`;
 
           const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
           const url = URL.createObjectURL(blob);
