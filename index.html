@@ -62,8 +62,10 @@
 /* Scroll Fade Animation */
 .section > *:not(.itinerary-floral){
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transform: translateY(24px);
+  transition:
+    opacity 1.4s cubic-bezier(.22,.61,.36,1),
+    transform 1.4s cubic-bezier(.22,.61,.36,1);
 }
 .section > *.in-view{
   opacity: 1;
@@ -140,8 +142,10 @@ body{
 
   border-radius: 999px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2px;
 
   position: relative;
   cursor: pointer;
@@ -218,7 +222,7 @@ body{
 }
 
 .opening-initial{
-  font-family: 'Tangerine', cursive;
+  font-family: 'Cormorant Garamond', serif;
   font-weight: 700;
   font-size: calc(var(--btnSize) * 0.55);
   line-height: 1;
@@ -230,12 +234,12 @@ body{
   background-clip: text;
 }
 
-.opening-sub{
+/* .opening-sub{
   font-family: 'Cormorant Garamond', serif;
   letter-spacing: 3px;
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(59,52,43,0.85);
-}
+} */
 
 /* start animation state */
 .opening-overlay.is-opening .opening-center{
@@ -543,12 +547,38 @@ body{
   margin-top: 10px;
 }
 .cd-box{
+  position: relative;
   background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(0,0,0,0.06);
   border-radius: 14px;
   padding: 14px 8px;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(233,221,200,0.75);
+  box-shadow:
+    0 10px 26px rgba(0,0,0,0.06),
+    0 2px 6px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+.cd-box::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:14px;
+  padding:1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,240,166,0.8) 0%,
+    rgba(184,135,11,0.6) 40%,
+    rgba(184,135,11,0.6) 60%,
+    rgba(255,240,166,0.8) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events:none;
+  opacity:0.9;
 }
 .cd-num{
   font-family: 'CinzelCustom', serif;
@@ -567,6 +597,57 @@ body{
   .countdown{ gap: 8px; }
   .cd-box{ padding: 12px 6px; }
   .cd-label{ font-size: 11px; }
+}
+
+/* Section 5: Doa */
+.doa-section{
+  padding-top: 55px;
+  padding-bottom: 70px;
+}
+
+.doa-title{
+  margin-bottom: 18px;
+  letter-spacing: 1.5px;
+}
+
+.doa-translation{
+  max-width: 340px;
+  font-family: 'Cormorant Garamond', serif;
+  margin: 0 auto;
+  font-size: clamp(14px, 4vw, 17px);
+  line-height: 1.5;
+}
+
+/* Glass box for doa */
+.doa-glass{
+  max-width: 360px;
+  margin: 0 auto;
+
+  padding: 28px 22px;
+
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(233,221,200,0.75);
+  border-radius: 18px;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.08),
+    0 2px 8px rgba(0,0,0,0.04);
+}
+
+.gold-divider{
+  width: 150px;
+  height: 1px;
+  margin: 10px auto 18px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #C9A227,
+    transparent
+  );
 }
 
 /* Floating glass bottom bar */
@@ -858,7 +939,7 @@ body{
 <body>
 
 <!-- Background music -->
-<audio id="bgMusic" loop preload="metadata">
+<audio id="bgMusic" loop preload="metadata" playsinline>
   <source src="upload/audio/music.mp3" type="audio/mpeg">
 </audio>
 
@@ -870,8 +951,8 @@ body{
   <div class="opening-center">
     <div class="opening-btn" id="openingBtn" role="button" tabindex="0" aria-label="Buka jemputan">
       <div class="opening-initial">NA</div>
+      <!-- <div class="opening-sub">BUKA</div> -->
     </div>
-    <div class="opening-sub">BUKA</div>
   </div>
 </div>
 
@@ -1013,6 +1094,21 @@ body{
     </div>
   </section>
 
+  <!-- Section 5: Doa -->
+  <section class="section doa-section">
+
+    <div class="doa-glass">
+      <div class="doa-title seasons-text"><strong>Doa Buat Pengantin</strong></div>
+      <div class="gold-divider"></div>
+      <div class="doa-translation">
+        Ya Allah, berkatilah majlis perkahwinan ini, limpahkan baraqah dan rahmat kepada kedua mempelai ini,
+        kurniakanlah mereka zuriat yang soleh dan solehah. Kekalkanlah jodoh mereka di dunia dan di akhirat
+        dan sempurnakanlah agama mereka dengan berkat ikatan ini.
+      </div>
+    </div>
+
+  </section>
+
 </main>
 
 <!-- Bottom bar -->
@@ -1054,8 +1150,78 @@ document.addEventListener("DOMContentLoaded", function() {
   const openingOverlay = document.getElementById("openingOverlay");
   const openingBtn = document.getElementById("openingBtn");
   const bgMusic = document.getElementById("bgMusic");
+  const arch = document.querySelector(".hero .arch");
+
+    let autoScrollId = null;
+    let autoScrollStarted = false;
+    let resumeTimer = null;
+
+    function startAutoScroll(){
+      if (autoScrollId) return;
+
+      autoScrollStarted = true;
+      let lastTime = null;
+      let scrollCarry = 0;
+
+      const speed = 70; 
+      /* pixels per second
+         try:
+         8  = very slow
+         12 = elegant
+         18 = gentle
+         24 = more noticeable
+      */
+
+      function step(timestamp){
+        if (!autoScrollStarted){
+          autoScrollId = null;
+          return;
+        }
+
+        if (!lastTime) lastTime = timestamp;
+        const delta = timestamp - lastTime;
+        lastTime = timestamp;
+
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+        if (window.scrollY < maxScroll){
+          scrollCarry += (speed * delta) / 1000;
+
+          const move = Math.floor(scrollCarry);
+          if (move > 0){
+            window.scrollBy(0, move);
+            scrollCarry -= move;
+          }
+
+          autoScrollId = requestAnimationFrame(step);
+        } else {
+          autoScrollId = null;
+        }
+      }
+
+      autoScrollId = requestAnimationFrame(step);
+    }
+
+    function stopAutoScroll(){
+      autoScrollStarted = false;
+
+      if (autoScrollId){
+        cancelAnimationFrame(autoScrollId);
+        autoScrollId = null;
+      }
+
+      if (resumeTimer){
+        clearTimeout(resumeTimer);
+      }
+
+      resumeTimer = setTimeout(() => {
+        startAutoScroll();
+      }, 2500); // restart after 2.5 seconds of no interaction
+    }
 
   function openInvitation(){
+
+    window.scrollTo({ top: 0, behavior: "auto" });
     if (!openingOverlay) return;
 
     if (bgMusic) {
@@ -1067,7 +1233,21 @@ document.addEventListener("DOMContentLoaded", function() {
     setTimeout(() => {
       openingOverlay.remove();
     }, 910);
+
+
   }
+
+    if (arch){
+      arch.addEventListener("animationend", (e) => {
+        if (e.animationName === "zoomOut"){
+          startAutoScroll();
+        }
+      }, { once: true });
+    }
+
+    ["wheel", "touchstart", "keydown", "mousedown"].forEach(evt => {
+      window.addEventListener(evt, stopAutoScroll, { passive: true });
+    });
 
   if (openingBtn){
     openingBtn.addEventListener("click", openInvitation);
@@ -1089,12 +1269,17 @@ document.addEventListener("DOMContentLoaded", function() {
     item.style.setProperty("--delay", `${i * 120}ms`);
   });
 
+  const revealOffset = 90; // adjust based on bottom bar height
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add("in-view");
       else entry.target.classList.remove("in-view");
     });
-  }, { threshold: 0.15 });
+  }, {
+    threshold: 0.05,
+    rootMargin: `0px 0px -${revealOffset}px 0px`
+  });
 
   elements.forEach(el => observer.observe(el));
   itineraryItems.forEach(el => observer.observe(el));
